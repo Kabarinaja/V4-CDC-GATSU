@@ -1,0 +1,165 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.uid == "oSR3DIuFx7hmW3OvVmgN6uPYzzr1" ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin")
+      );
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      // Customer can read own profile; Admin can read all member profiles
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+
+      // Customer can create profile on registration with role 'customer' and 0 points
+      allow create: if isSignedIn() && (
+        (isOwner(userId) &&
+         request.resource.data.role == "customer" &&
+         request.resource.data.points == 0 &&
+         request.resource.data.id == userId) ||
+        isAdmin()
+      );
+
+      // Customer can update non-sensitive fields (name, whatsapp)
+      // Cannot self-grant points or change role to admin
+      allow update: if (
+        (isOwner(userId) &&
+         request.resource.data.role == resource.data.role &&
+         request.resource.data.points == resource.data.points &&
+         request.resource.data.memberId == resource.data.memberId &&
+         request.resource.data.id == resource.data.id) ||
+        isAdmin()
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // Products Collection
+    match /products/{productId} {
+      // Anyone can read active products; Admin can read and write all
+      allow read: if resource.data.isActive == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Customer can read own order; Admin can read all orders
+      allow get: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+
+      // Customer can create an order for themselves with initial status
+      allow create: if isSignedIn() && (
+        (request.resource.data.userId == request.auth.uid &&
+         (request.resource.data.paymentStatus == "pending_verification" || request.resource.data.paymentStatus == "unpaid") &&
+         (request.resource.data.orderStatus == "pending_payment" || request.resource.data.orderStatus == "payment_verification")) ||
+        isAdmin()
+      );
+
+      // Customer can update paymentProofUrl if not yet verified
+      allow update: if (
+        (isSignedIn() && resource.data.userId == request.auth.uid &&
+         resource.data.paymentStatus != "verified" &&
+         request.resource.data.total == resource.data.total &&
+         request.resource.data.subtotal == resource.data.subtotal &&
+         request.resource.data.userId == resource.data.userId &&
+         request.resource.data.paymentStatus != "verified" &&
+         request.resource.data.orderStatus != "completed") ||
+        isAdmin()
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // Point Transactions Ledger
+    match /pointTransactions/{transactionId} {
+      // Customer can read own transactions; Admin can read all
+      allow get: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow list: if (isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid));
+      // Only admin can insert point transactions (or adjust points)
+      allow write: if isAdmin();
+    }
+
+    // Promotions Collection
+    match /promotions/{promoId} {
+      allow read: if resource.data.isActive == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Chats Collection
+    match /chats/{chatId} {
+      allow get: if (isSignedIn() && (resource.data.userId == request.auth.uid || chatId == request.auth.uid)) || isAdmin();
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() && (request.resource.data.userId == request.auth.uid || isAdmin());
+      allow update: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow delete: if isAdmin();
+
+      // Chat Messages Subcollection
+      match /messages/{messageId} {
+        allow read: if (isSignedIn() && get(/databases/$(database)/documents/chats/$(chatId)).data.userId == request.auth.uid) || isAdmin();
+        allow create: if (isSignedIn() &&
+          ((request.resource.data.senderId == request.auth.uid && request.resource.data.senderRole == "customer") || isAdmin())
+        );
+        allow update, delete: if isAdmin();
+      }
+    }
+
+
+    // Member top-up requests: owner can create/read only their own pending request.
+    // Admin performs the status transition and all balance/point ledger changes.
+    match /topUpRequests/{requestId} {
+      allow get, list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.status == "pending" &&
+        request.resource.data.points is number && request.resource.data.points > 0 &&
+        request.resource.data.amountPaid is number && request.resource.data.amountPaid > 0 &&
+        request.resource.data.nominalValue is number && request.resource.data.nominalValue > 0 &&
+        request.resource.data.paymentProofUrl is string &&
+        request.resource.data.paymentProofUrl.matches('https://.*');
+      allow update, delete: if isAdmin();
+    }
+
+    // Internal admin float and immutable ledger are admin-only.
+    match /adminBalances/{balanceId} {
+      allow read: if isAdmin();
+      allow create, update: if isAdmin() &&
+        request.resource.data.balance is number && request.resource.data.balance >= 0;
+      allow delete: if false;
+    }
+    match /adminBalanceLedger/{entryId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+
+    // Public read-only payment configuration; only admins may update it.
+    match /appSettings/{settingId} {
+      allow read: if settingId == "payment";
+      allow write: if isAdmin();
+    }
+
+    // Admin Activity Logs
+    match /adminLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

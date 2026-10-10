@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admingatsu
+Disallow: /checkout
+Disallow: /pesanan
+Disallow: /profil
+Disallow: /chat
+Sitemap: https://www.dicelupayamcrispy.store/sitemap.xml

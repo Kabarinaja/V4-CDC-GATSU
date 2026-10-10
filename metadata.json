@@ -1,0 +1,6 @@
+{
+  "name": "MY CDC GATSU",
+  "description": "Aplikasi Web Member, Pemesanan Online & Loyalitas Resmi MY CDC GATSU (Dicelup Ayam Crispy)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

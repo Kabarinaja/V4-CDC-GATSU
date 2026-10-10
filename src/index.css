@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --brand: #f59e0b;
+  --brand-strong: #ea580c;
+  --ink: #18181b;
+  --muted: #71717a;
+  --line: #e4e4e7;
+  --surface: #ffffff;
+  --page: #fafafa;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+::selection { background: #f59e0b; color: #18181b; }
+
+/* Quiet, human-looking scrollbar. */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+.safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+.mobile-bottom-space { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+
+/* Prevent iOS Safari from zooming focused form controls. */
+@media (max-width: 767px) {
+  input, textarea, select { font-size: 16px !important; }
+}
+
+@media (min-width: 768px) {
+  .mobile-bottom-space { padding-bottom: 1rem; }
+}

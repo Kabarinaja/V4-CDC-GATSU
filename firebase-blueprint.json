@@ -1,0 +1,186 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User member profile entity",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "format": "email" },
+        "whatsapp": { "type": "string", "maxLength": 20 },
+        "memberId": { "type": "string", "maxLength": 30 },
+        "role": { "type": "string", "enum": ["customer", "admin"] },
+        "points": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "whatsapp", "memberId", "role", "points"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Culinary menu product entity",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "sortOrder": { "type": "number" },
+        "prices": { "type": "object" },
+        "extraOptions": { "type": "object" }
+      },
+      "required": ["id", "name", "isActive", "prices"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer food order entity",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "orderNumber": { "type": "string" },
+        "userId": { "type": "string" },
+        "memberId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerWhatsapp": { "type": "string", "maxLength": 20 },
+        "deliveryAddress": { "type": "string", "maxLength": 500 },
+        "addressNote": { "type": "string", "maxLength": 300 },
+        "shippingArea": { "type": "string", "enum": ["indramayu_kota", "luar_indramayu_kota"] },
+        "shippingFee": { "type": "number" },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "pointsRedeemed": { "type": "number" },
+        "discountFromPoints": { "type": "number" },
+        "total": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "paymentProofUrl": { "type": "string" },
+        "paymentStatus": { "type": "string", "enum": ["pending_verification", "verified", "rejected"] },
+        "paymentRejectionReason": { "type": "string" },
+        "orderStatus": { "type": "string", "enum": ["pending_payment", "payment_verification", "accepted", "cooking", "packing", "shipping", "completed", "cancelled"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "customerName", "customerWhatsapp", "items", "subtotal", "total", "paymentStatus", "orderStatus"]
+    },
+    "PointTransaction": {
+      "title": "PointTransaction",
+      "description": "Ledger of member points transactions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "memberId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["reward", "redeem", "refund", "manual_adjustment"] },
+        "description": { "type": "string" },
+        "orderId": { "type": "string" },
+        "adminUid": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "memberId", "amount", "type", "description"]
+    },
+    "Promotion": {
+      "title": "Promotion",
+      "description": "Marketing poster and promo banner",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "sortOrder": { "type": "number" },
+        "startAt": { "type": "string" },
+        "endAt": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "imageUrl", "isActive"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "Customer support conversation thread",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerWhatsapp": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "lastMessageAt": { "type": "string" },
+        "unreadByAdmin": { "type": "number" },
+        "unreadByCustomer": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "customerName", "customerWhatsapp"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Individual message inside a chat thread",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "chatId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderRole": { "type": "string", "enum": ["customer", "admin"] },
+        "text": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "location": { "type": "object" },
+        "orderId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "chatId", "senderId", "senderRole", "text"]
+    },
+    "AdminLog": {
+      "title": "AdminLog",
+      "description": "Audit trail log of sensitive admin operations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "adminUid": { "type": "string" },
+        "action": { "type": "string" },
+        "targetType": { "type": "string" },
+        "targetId": { "type": "string" },
+        "details": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "adminUid", "action", "details"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and member accounts"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Catalog of active chicken products and pricing"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Online and POS order records"
+    },
+    "/pointTransactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/PointTransaction" },
+      "description": "Immutable ledger of all points earned, redeemed, or adjusted"
+    },
+    "/promotions/{promoId}": {
+      "schema": { "$ref": "#/entities/Promotion" },
+      "description": "Promotional banners displayed on customer homepage"
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/Chat" },
+      "description": "Customer communication thread"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Messages exchanged between customer and outlet crew"
+    },
+    "/adminLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AdminLog" },
+      "description": "Operational audit logs"
+    }
+  }
+}
