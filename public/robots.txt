@@ -4,7 +4,9 @@ Disallow: /admin
 Disallow: /admingatsu
 Disallow: /checkout
 Disallow: /pesanan
-Disallow: /profil$
 Disallow: /chat
+Disallow: /profil
+Allow: /profil-logis
+Allow: /profil-owner
 
 Sitemap: https://www.dicelupayamcrispy.store/sitemap.xml
