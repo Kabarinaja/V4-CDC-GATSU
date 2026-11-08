@@ -36,6 +36,8 @@ import { AdminPointsPage } from './pages/admin/AdminPointsPage';
 import { AdminReportsPage } from './pages/admin/AdminReportsPage';
 import { AdminTopUpsPage } from './pages/admin/AdminTopUpsPage';
 import { TopUpPage } from './pages/TopUpPage';
+import { ProfilLogisPage } from './pages/ProfilLogisPage';
+import { ProfilOwnerPage } from './pages/ProfilOwnerPage';
 
 const PublicLayout: React.FC = () => {
   return (
@@ -61,6 +63,8 @@ export default function App() {
                 {/* Public & Customer Routes with Navbar & Footer */}
                 <Route element={<PublicLayout />}>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/profil-logis" element={<ProfilLogisPage />} />
+                  <Route path="/profil-owner" element={<ProfilOwnerPage />} />
                   <Route path="/menu" element={<MenuPage />} />
                   <Route path="/checkout" element={<CheckoutPage />} />
                   <Route path="/pesanan" element={<OrdersPage />} />
