@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createHash } from "node:crypto";
-import { jsonHeaders, requireAdmin } from "../../celupnews/server";
+import { jsonHeaders, requireAdmin } from "../../celupnews/server.ts";
 const ALLOWED_FOLDERS=new Set(["celupnews/logo","celupnews/articles/thumbnails","celupnews/articles/featured","celupnews/articles/content","celupnews/authors/profile","celupnews/banners"]);
 export default async function handler(req:VercelRequest,res:VercelResponse){jsonHeaders(res);if(!["GET","DELETE"].includes(req.method||"")){res.setHeader("Allow","GET, DELETE");return res.status(405).end();}if(!await requireAdmin(req,res))return;
   const cloud=process.env.CELUPNEWS_CLOUD_NAME;const key=process.env.CELUPNEWS_CLOUDINARY_API_KEY;const secret=process.env.CELUPNEWS_CLOUDINARY_API_SECRET;if(!cloud||!key||!secret)return res.status(503).json({error:"Media service is not configured"});

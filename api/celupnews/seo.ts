@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import sanitizeHtml from "sanitize-html";
 import { FieldValue } from "firebase-admin/firestore";
-import { publicImage, safeText, serverDb } from "../../celupnews/server";
+import { publicImage, safeText, serverDb } from "../../celupnews/server.ts";
 const esc=safeText;
 function pageNotFound(res:VercelResponse){res.status(404).setHeader("Content-Type","text/html; charset=utf-8");return res.end("<!doctype html><html lang=\"id\"><meta charset=\"utf-8\"><title>Berita tidak ditemukan — CELUPNEWS</title><body><h1>Berita tidak ditemukan</h1><a href=\"/celupnews\">Kembali ke CELUPNEWS</a></body></html>");}
 export default async function handler(req:VercelRequest,res:VercelResponse){if(req.method!=="GET")return res.status(405).end();const number=String(req.query.number||"");const slug=String(req.query.slug||"");if(!/^\d{2,4}$/.test(number)||!/^[a-z0-9-]{1,100}$/.test(slug))return pageNotFound(res);
