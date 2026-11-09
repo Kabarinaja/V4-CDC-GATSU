@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createHash } from "node:crypto";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
-import { jsonHeaders, serverDb } from "../../celupnews/server";
+import { jsonHeaders, serverDb } from "../../celupnews/server.ts";
 export default async function handler(req:VercelRequest,res:VercelResponse){jsonHeaders(res);if(req.method!=="POST"){res.setHeader("Allow","POST");return res.status(405).end();}
  const articleId=typeof req.body?.articleId==="string"?req.body.articleId:"";const name=typeof req.body?.name==="string"?req.body.name.trim():"";const message=typeof req.body?.message==="string"?req.body.message.trim():"";const honeypot=typeof req.body?.website==="string"?req.body.website:"";
  if(honeypot)return res.status(202).json({ok:true});if(!/^\d{2,4}$/.test(articleId)||name.length<2||name.length>80||message.length<3||message.length>1000||/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(message))return res.status(400).json({error:"Invalid comment"});

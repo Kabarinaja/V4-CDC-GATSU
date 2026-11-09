@@ -1,4 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
-import { serverDb } from "../../celupnews/server";
+import { serverDb } from "../../celupnews/server.ts";
 export default async function handler(req:VercelRequest,res:VercelResponse){if(req.method!=="GET"&&req.method!=="POST")return res.status(405).end();const secret=process.env.CRON_SECRET;if(!secret||req.headers.authorization!==`Bearer ${secret}`)return res.status(401).end();try{const now=Timestamp.now();const snap=await serverDb().collection("articles").where("status","==","scheduled").where("scheduledAt","<=",now).limit(300).get();const batch=serverDb().batch();snap.docs.forEach(d=>batch.update(d.ref,{status:"published",publishedAt:FieldValue.serverTimestamp(),updatedAt:FieldValue.serverTimestamp()}));if(!snap.empty)await batch.commit();return res.status(200).json({published:snap.size});}catch{return res.status(500).json({error:"Scheduled publishing failed"});}}
