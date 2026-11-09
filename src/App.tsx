@@ -9,6 +9,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { AdminLayout } from './components/layout/AdminLayout';
 import { FloatingChat } from './components/layout/FloatingChat';
+import { CelupNewsApp } from './celupnews';
 
 // Public & Customer Pages
 import { HomePage } from './pages/HomePage';
@@ -77,6 +78,9 @@ export default function App() {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                 </Route>
+
+                {/* CELUPNEWS — route portal terpisah dari layout restoran */}
+                <Route path="/celupnews/*" element={<CelupNewsApp />} />
 
                 {/* Secret Crew Gate Entry */}
                 <Route path="/admingatsu" element={<AdminEntryPage />} />

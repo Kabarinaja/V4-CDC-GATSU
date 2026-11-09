@@ -1,32 +1,56 @@
 {
-"rewrites": [
-{
-"source": "/kasir.html",
-"destination": "/kasir.html"
-},
-{
-"source": "/(.*)",
-"destination": "/index.html"
-}
-],
-"headers": [
-{
-"source": "/sitemap.xml",
-"headers": [
-{
-"key": "Content-Type",
-"value": "application/xml; charset=utf-8"
-}
-]
-},
-{
-"source": "/robots.txt",
-"headers": [
-{
-"key": "Content-Type",
-"value": "text/plain; charset=utf-8"
-}
-]
-}
-]
+  "rewrites": [
+    {
+      "source": "/kasir.html",
+      "destination": "/kasir.html"
+    },
+    {
+      "source": "/celupnews/berita/:number/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(bot|Bot|BOT|crawler|Crawler|spider|Spider|preview|Preview|whatsapp|WhatsApp|facebookexternalhit|FacebookExternalHit|slackbot|Slackbot|twitterbot|Twitterbot|LinkedInBot|Googlebot).*"
+        }
+      ],
+      "destination": "/api/celupnews/seo?number=:number&slug=:slug"
+    },
+    {
+      "source": "/celupnews/sitemap.xml",
+      "destination": "/api/celupnews/sitemap"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/celupnews/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    }
+  ]
 }

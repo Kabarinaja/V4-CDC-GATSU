@@ -10,3 +10,17 @@ Allow: /profil-logis
 Allow: /profil-owner
 
 Sitemap: https://www.dicelupayamcrispy.store/sitemap.xml
+
+# CELUPNEWS
+Allow: /celupnews$
+Allow: /celupnews/berita
+Allow: /celupnews/kuliner
+Allow: /celupnews/politik
+Allow: /celupnews/nusantara
+Allow: /celupnews/indramayu
+Allow: /celupnews/makanan-khas-daerah
+Allow: /celupnews/profilpenulis-
+Disallow: /celupnews/admincelupnews
+Disallow: /celupnews/admincelupnews/dashboard
+
+Sitemap: https://www.dicelupayamcrispy.store/celupnews/sitemap.xml
