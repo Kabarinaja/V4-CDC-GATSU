@@ -1,0 +1,6 @@
+{
+  "firestore": {
+    "rules": "celupnews/firestore.rules",
+    "indexes": "celupnews/firestore.indexes.json"
+  }
+}
