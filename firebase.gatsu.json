@@ -1,0 +1,6 @@
+{
+  "firestore": {
+    "rules": "firestore.gatsu.rules",
+    "indexes": "firestore.gatsu.indexes.json"
+  }
+}

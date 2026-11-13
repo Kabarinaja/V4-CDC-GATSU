@@ -20,6 +20,21 @@
       "destination": "/api/celupnews/sitemap"
     },
     {
+      "source": "/gatsuwewarah/berita/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(bot|Bot|BOT|crawler|Crawler|spider|Spider|preview|Preview|whatsapp|WhatsApp|facebookexternalhit|FacebookExternalHit|twitterbot|Twitterbot|LinkedInBot|TelegramBot|Discordbot|Googlebot).*"
+        }
+      ],
+      "destination": "/api/gatsuwewarah/seo?slug=:slug"
+    },
+    {
+      "source": "/gatsuwewarah/sitemap.xml",
+      "destination": "/api/gatsuwewarah/sitemap"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -49,6 +64,15 @@
         {
           "key": "Content-Type",
           "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/gatsuwewarah/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
         }
       ]
     }

@@ -1,3 +1,4 @@
+import GatsuWewarahApp from './modules/gatsuwewarah/GatsuWewarahApp';
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -80,7 +81,8 @@ export default function App() {
                 </Route>
 
                 {/* CELUPNEWS — route portal terpisah dari layout restoran */}
-                <Route path="/celupnews/*" element={<CelupNewsApp />} />
+                <Route path="/gatsuwewarah/*" element={<GatsuWewarahApp />} />
+      <Route path="/celupnews/*" element={<CelupNewsApp />} />
 
                 {/* Secret Crew Gate Entry */}
                 <Route path="/admingatsu" element={<AdminEntryPage />} />

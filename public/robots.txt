@@ -10,3 +10,4 @@ Allow: /profil-logis
 Allow: /profil-owner
 
 Sitemap: https://www.dicelupayamcrispy.store/sitemap.xml
+Sitemap: https://www.dicelupayamcrispy.store/gatsuwewarah/sitemap.xml

@@ -1,0 +1,194 @@
+.gatsu-prose {
+  color: #1c1917;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.gatsu-prose p {
+  margin-top: 0;
+  margin-bottom: 1.35em;
+}
+
+.gatsu-prose h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 1.75em;
+  margin-bottom: 0.75em;
+  color: #0a0a0a;
+}
+
+.gatsu-prose h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 1.65em;
+  margin-bottom: 0.65em;
+  color: #0a0a0a;
+}
+
+.gatsu-prose h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-top: 1.5em;
+  margin-bottom: 0.55em;
+  color: #0a0a0a;
+}
+
+.gatsu-prose h4 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 1.35em;
+  margin-bottom: 0.5em;
+  color: #171717;
+}
+
+.gatsu-prose strong {
+  font-weight: 700;
+  color: #0a0a0a;
+}
+
+.gatsu-prose em {
+  font-style: italic;
+}
+
+.gatsu-prose u {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gatsu-prose blockquote {
+  margin: 1.75em 0;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #d6d3d1;
+  border-bottom: 1px solid #d6d3d1;
+  background-color: #fafaf9;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.1875rem;
+  line-height: 1.65;
+  color: #292524;
+}
+
+.gatsu-prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.35em;
+}
+
+.gatsu-prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1.35em;
+}
+
+.gatsu-prose li {
+  margin-bottom: 0.45em;
+}
+
+.gatsu-prose a {
+  color: #b91c1c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gatsu-prose a:hover {
+  color: #7f1d1d;
+}
+
+.gatsu-prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto 0.5rem;
+  background: #f5f5f4;
+}
+
+.gatsu-prose figure {
+  margin: 1.75rem 0;
+}
+
+.gatsu-prose figcaption,
+.gatsu-prose caption {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #57534e;
+  font-style: italic;
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+.gatsu-prose hr {
+  border: 0;
+  border-top: 1px solid #d6d3d1;
+  margin: 2rem 0;
+}
+
+.gatsu-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.gatsu-prose th,
+.gatsu-prose td {
+  border: 1px solid #d6d3d1;
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.gatsu-prose th {
+  background-color: #f5f5f4;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+
+/* Tiptap editor surface refinements */
+.gatsu-editor-surface .ProseMirror {
+  min-height: 380px;
+  outline: none;
+  padding: 1.25rem;
+}
+
+.gatsu-editor-surface .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #a8a29e;
+  pointer-events: none;
+  height: 0;
+}
+
+.gatsu-editor-surface .ProseMirror table .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: '';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(185, 28, 28, 0.08);
+  pointer-events: none;
+}
+
+.gatsu-editor-surface .ProseMirror table td,
+.gatsu-editor-surface .ProseMirror table th {
+  position: relative;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
