@@ -1,0 +1,44 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isGatsuAdmin() {
+      return request.auth != null && request.auth.uid == '01JRBdGkOdRn8TrjTlJf7WsvWsk1';
+    }
+
+    match /articles/{articleId} {
+      allow read: if resource.data.status == 'published' || isGatsuAdmin();
+      allow create, delete: if isGatsuAdmin();
+      allow update: if isGatsuAdmin() || (
+        resource.data.status == 'published'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
+        && request.resource.data.views == resource.data.views + 1
+      );
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isGatsuAdmin();
+    }
+
+    match /authors/{authorId} {
+      allow read: if true;
+      allow write: if isGatsuAdmin();
+    }
+
+    match /ads/{adId} {
+      allow read: if resource.data.active == true || isGatsuAdmin();
+      allow create, delete: if isGatsuAdmin();
+      allow update: if isGatsuAdmin() || (
+        resource.data.active == true
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks'])
+        && request.resource.data.clicks == resource.data.clicks + 1
+      );
+    }
+
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isGatsuAdmin();
+    }
+  }
+}
