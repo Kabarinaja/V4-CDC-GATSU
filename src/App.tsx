@@ -1,4 +1,3 @@
-import GatsuWewarahApp from './modules/gatsuwewarah/GatsuWewarahApp';
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -41,6 +40,19 @@ import { TopUpPage } from './pages/TopUpPage';
 import { ProfilLogisPage } from './pages/ProfilLogisPage';
 import { ProfilOwnerPage } from './pages/ProfilOwnerPage';
 
+import { Suspense } from 'react';
+
+const GatsuWewarahApp = React.lazy(
+  () => import('./modules/gatsuwewarah/GatsuWewarahApp')
+);
+
+const CelupNewsApp = React.lazy(
+  () => import('./celupnews').then((module) => ({
+    default: module.CelupNewsApp
+  }))
+);
+
+
 const PublicLayout: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 text-zinc-900 font-sans">
@@ -81,8 +93,8 @@ export default function App() {
                 </Route>
 
                 {/* CELUPNEWS — route portal terpisah dari layout restoran */}
-                <Route path="/gatsuwewarah/*" element={<GatsuWewarahApp />} />
-      <Route path="/celupnews/*" element={<CelupNewsApp />} />
+                <Route path="/gatsuwewarah/*" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Memuat GATSU WEWARAH...</div>}><GatsuWewarahApp /></Suspense>} />
+      <Route path="/celupnews/*" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Memuat CELUPNEWS...</div>}><CelupNewsApp /></Suspense>} />
 
                 {/* Secret Crew Gate Entry */}
                 <Route path="/admingatsu" element={<AdminEntryPage />} />
