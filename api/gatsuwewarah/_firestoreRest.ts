@@ -97,31 +97,32 @@ export async function fetchPublishedArticlesRest(): Promise<Article[]> {
           value: { stringValue: 'published' },
         },
       },
-      orderBy: [{ field: { fieldPath: 'publishedAt' }, direction: 'DESCENDING' }],
       limit: 500,
     },
   };
 
-  try {
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
 
-    if (!resp.ok) {
-      // Fallback to basic collection read if composite index isn't deployed yet
-      const all = await fetchCollectionViaRest<Article>('articles', 200);
-      return all.filter((a) => a.status === 'published');
-    }
-
-    const rows = (await resp.json()) as Array<{ document?: FirestoreDoc }>;
-    return rows
-      .filter((r) => Boolean(r.document))
-      .map((r) => docToPlainObject(r.document!) as unknown as Article);
-  } catch {
-    return [];
+  if (!resp.ok) {
+    const detail = await resp.text();
+    throw new Error(
+      `Firestore published articles query failed (${resp.status}): ${detail}`
+    );
   }
+
+  const rows = (await resp.json()) as Array<{ document?: FirestoreDoc }>;
+
+  return rows
+    .filter((r) => Boolean(r.document))
+    .map((r) => docToPlainObject(r.document!) as unknown as Article)
+    .sort(
+      (a, b) =>
+        Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || '')
+    );
 }
 
 export async function fetchPublishedArticleBySlugRest(
