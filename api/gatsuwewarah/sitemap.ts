@@ -3,7 +3,7 @@ import {
   fetchAuthorsRest,
   fetchCategoriesRest,
   fetchPublishedArticlesRest,
-} from './_firestoreRest';
+} from './_firestoreRest.ts';
 
 interface VercelResponse extends ServerResponse {
   status: (code: number) => VercelResponse;
