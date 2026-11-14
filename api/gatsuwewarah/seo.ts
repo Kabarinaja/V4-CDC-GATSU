@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { optimizeCloudinaryUrl } from '../../src/modules/gatsuwewarah/lib/cloudinary.ts';
 import { buildArticleMeta, escapeHtmlAttr } from '../../src/modules/gatsuwewarah/lib/seo.ts';
-import { fetchPublishedArticleBySlugRest } from './_firestoreRest.ts';
+import { fetchPublishedArticleBySlugRest } from './_firestoreRest.js';
 
 interface VercelRequest extends IncomingMessage {
   query?: Record<string, string | string[] | undefined>;
