@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { generateSitemapXml } from '../../src/modules/gatsuwewarah/lib/seo';
+import { generateSitemapXml } from '../../src/modules/gatsuwewarah/lib/seo.ts';
 import {
   fetchAuthorsRest,
   fetchCategoriesRest,
